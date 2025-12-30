@@ -36,5 +36,18 @@ const loginUser = async (username, password) => {
   }
 };
 
+// get all customers
+const getAllCustomers = async () => {
+  try {
+    const res = await axios.get(`${baseUrl}/customers`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("error:", error.response?.data || error);
+    throw error;
+  }
+};
+
 // export functions
-export { registerUser, loginUser, getToken };
+export { getToken, registerUser, loginUser, getAllCustomers };

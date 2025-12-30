@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const app = express();
 const cors = require("cors");
+const port = process.env.PORT || 3000;
 
 // cors middleware
 app.use(cors());
@@ -19,6 +20,6 @@ app.use('/api', require('./app/routes/customerRoutes'));
 app.use('/api', require('./app/routes/caseRoutes'));
 
 // start server
-app.listen(3000, () => {
-  console.log(`Server is running on port http://localhost:3000`);
+app.listen(port, () => {
+  console.log(`Server is running on port http://localhost:${port}`);
 });
