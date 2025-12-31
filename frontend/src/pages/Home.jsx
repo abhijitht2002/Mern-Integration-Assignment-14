@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllCustomers } from "../api/api-helper";
 
-function Dashboard() {
+function Home() {
   const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -98,4 +98,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Home;

@@ -5,20 +5,21 @@ const checkAuth = (req, res, next) => {
     console.log("Request headers: ", req.headers);
     console.log("Authorization header: ", req.headers.authorization);
 
-    const authHeader = req.headers.authorization.replace("Bearer ", "");
-    if (!authHeader) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "No token provided" });
     }
 
-    const isValid = jwt.verify(authHeader, process.env.JWT_SECRET_KEY);
-    if (!isValid) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+    const token = authHeader.split(" ")[1];
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    req.user = payload;
 
     next();
   } catch (error) {
     console.error("Auth error: ", error);
-    return res.status(400).json({ error: "Invalid token or token expired" });
+    return res.status(400).json({ error: "Invalid or expired token" });
   }
 };
 

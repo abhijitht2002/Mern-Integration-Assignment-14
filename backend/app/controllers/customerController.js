@@ -3,7 +3,12 @@ const Customer = require("../models/Customer");
 exports.createCustomer = async (req, res) => {
   const { name, contact_info, status } = req.body;
   try {
-    const newCustomer = new Customer({ name, contact_info, status });
+    const newCustomer = new Customer({
+      name,
+      contact_info,
+      status,
+      created_by: req.user.id,
+    });
     await newCustomer.save();
     res
       .status(201)

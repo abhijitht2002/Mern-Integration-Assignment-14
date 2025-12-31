@@ -19,16 +19,10 @@ const registerUser = async (username, password, role) => {
   }
 };
 
-// login user
-const loginUser = async (username, password) => {
+// sign in
+const signInUser = async (formdata) => {
   try {
-    const res = await axios.post(`${baseUrl}/auth/login`, {
-      username,
-      password,
-    });
-    // Save token in localStorage
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("name", res.data.name);
+    const res = await axios.post(`${baseUrl}/auth/login`, formdata);
     return res.data;
   } catch (error) {
     console.error("Login error:", error.response?.data || error);
@@ -50,4 +44,4 @@ const getAllCustomers = async () => {
 };
 
 // export functions
-export { getToken, registerUser, loginUser, getAllCustomers };
+export { getToken, registerUser, signInUser, getAllCustomers };
