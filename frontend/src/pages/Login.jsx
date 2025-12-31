@@ -23,13 +23,7 @@ function Login() {
     setLoading(true);
 
     try {
-      console.log("Login:", formData);
-
       const res = await signInUser(formData);
-      console.log("TOKEN AFTER LOGIN:", localStorage.getItem("token"));
-      console.log("Login response:", res);
-      console.log("name response:", localStorage.getItem("name"));
-
       login(res.token);
       navigate("/");
     } catch (error) {
@@ -107,8 +101,11 @@ function Login() {
           </div>
 
           <div className="text-center">
+            <span className="text-sm text-gray-600 mr-2">
+              Don't have an account?
+            </span>
             <Link to="/register" className="text-blue-600 hover:text-blue-800">
-              Don't have an account? Register here
+              Register here
             </Link>
           </div>
         </form>

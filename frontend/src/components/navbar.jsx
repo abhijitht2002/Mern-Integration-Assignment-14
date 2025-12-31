@@ -17,21 +17,8 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
             <Link to="/" className="text-xl font-bold">
-              MyApp
+              CRM
             </Link>
-            <Link to="/home" className="hover:text-blue-200">
-              Home
-            </Link>
-            {user && (
-              <Link to="/protected" className="hover:text-blue-200">
-                Protected
-              </Link>
-            )}
-            {user?.role === "admin" && (
-              <Link to="/admin-secret" className="hover:text-blue-200">
-                Admin Secret
-              </Link>
-            )}
           </div>
           <div className="flex items-center space-x-4">
             {user ? (
