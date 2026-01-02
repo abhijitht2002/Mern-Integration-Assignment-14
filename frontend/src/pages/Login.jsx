@@ -28,6 +28,7 @@ function Login() {
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
+      // setError(error.response?.data || "Login failed. Please try again.");
       setError("Login failed. Please try again.");
     } finally {
       setLoading(false);

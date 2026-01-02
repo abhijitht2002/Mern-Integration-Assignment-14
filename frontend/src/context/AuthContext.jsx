@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // decode token to get user info
     if (!token) return;
-
+    
     try {
       const payload = jwtDecode(token);
       setUser({ id: payload.id, role: payload.role });

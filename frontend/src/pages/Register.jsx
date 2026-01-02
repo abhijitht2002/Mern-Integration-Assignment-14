@@ -12,11 +12,6 @@ function Register() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user");
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -161,7 +156,7 @@ function Register() {
 
           <div className="text-center">
             <span className="text-sm text-gray-600 mr-2">
-              Already have an account? 
+              Already have an account?
             </span>
             <Link to="/login" className="text-blue-600 hover:text-blue-800">
               Login here

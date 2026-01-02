@@ -7,7 +7,6 @@ exports.createCustomer = async (req, res) => {
       name,
       contact_info,
       status,
-      created_by: req.user.id,
     });
     await newCustomer.save();
     res
@@ -24,5 +23,24 @@ exports.getAllCustomers = async (req, res) => {
     res.status(200).json(customers);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch customers" });
+  }
+};
+
+exports.deleteCustomer = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedCustomer = await Customer.findByIdAndDelete(id);
+    if (!deletedCustomer) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "Customer deleted successfully",
+        data: deletedCustomer,
+      });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete customer" });
   }
 };

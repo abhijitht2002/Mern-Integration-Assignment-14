@@ -5,5 +5,6 @@ const auth = require("../middleware/checkAuth");
 
 router.post("/customers", auth, controller.createCustomer);
 router.get("/customers", auth, controller.getAllCustomers);
+router.delete("/customers/:id", auth, controller.deleteCustomer);
 
 module.exports = router;
