@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addCustomer, deleteCustomer, getAllCustomers } from "../api/api-helper";
+import {
+  addCustomer,
+  deleteCustomer,
+  getAllCustomers,
+  updateCustomer,
+} from "../api/api-helper";
 import CustomerContainer from "../components/CustomerContainer";
-import AddCustomerModal from "../components/AddCustomerModal";
+import CustomerFormModal from "../components/CustomerFormModal";
 
 function Home() {
   const [customers, setCustomers] = useState([]);
+  const [editingCustomer, setEditingCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   //   const name = localStorage.getItem("name");
@@ -32,9 +38,40 @@ function Home() {
   const handleDeleteCustomer = async (id) => {
     await deleteCustomer(id);
     getCustomers();
-  }
+  };
 
-  const handleEditCustomer = async (id, updatedData) => {}
+  const handleEditCustomer = async (customer) => {
+    console.log("Editing customer:", customer);
+    const [phone, email] = customer.contact_info
+      .split(", ")
+      .map((item) => item.trim());
+
+    setEditingCustomer({
+      _id: customer._id,
+      name: customer.name,
+      email: email,
+      phone: phone,
+      status: customer.status,
+    });
+
+    setShowForm(true);
+  };
+
+  const handleSubmitCustomer = async (formData) => {
+    if (editingCustomer) {
+      console.log("Editing customer:", formData);
+      const res = await updateCustomer(editingCustomer._id, formData);
+      console.log("Edit customer response:", res);
+    } else {
+      console.log("Adding new customer:", formData);
+      const res = await addCustomer(formData);
+      console.log("Add customer response:", res);
+    }
+
+    setEditingCustomer(null);
+    setShowForm(false);
+    getCustomers();
+  };
 
   useEffect(() => {
     getCustomers();
@@ -45,7 +82,7 @@ function Home() {
       {/* Add Customer */}
       <div className="mb-4">
         <button
-          onClick={() => setShowAddForm(true)}
+          onClick={() => setShowForm(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           + Add Customer
@@ -56,14 +93,22 @@ function Home() {
         {loading ? (
           <p className="p-4">Loading customers...</p>
         ) : (
-          <CustomerContainer customers={customers} onDeleteCustomer={handleDeleteCustomer} onEditCustomer={handleEditCustomer}/>
+          <CustomerContainer
+            customers={customers}
+            onDeleteCustomer={handleDeleteCustomer}
+            onEditCustomer={handleEditCustomer}
+          />
         )}
       </div>
 
-      <AddCustomerModal
-        isOpen={showAddForm}
-        onClose={() => setShowAddForm(false)}
-        onAdd={handleAddCustomer}
+      <CustomerFormModal
+        isOpen={showForm}
+        onClose={() => {
+          setShowForm(false);
+          setEditingCustomer(null);
+        }}
+        onSubmit={handleSubmitCustomer}
+        initialData={editingCustomer}
       />
     </div>
   );

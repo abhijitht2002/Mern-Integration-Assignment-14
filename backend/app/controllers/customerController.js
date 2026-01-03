@@ -34,13 +34,28 @@ exports.deleteCustomer = async (req, res) => {
       return res.status(404).json({ error: "Customer not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Customer deleted successfully",
-        data: deletedCustomer,
-      });
+    res.status(200).json({
+      message: "Customer deleted successfully",
+      data: deletedCustomer,
+    });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete customer" });
+  }
+};
+
+exports.updateCustomer = async (req, res) => {
+  try {
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Customer updated successfully",
+      data: updatedCustomer,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update customer" });
   }
 };

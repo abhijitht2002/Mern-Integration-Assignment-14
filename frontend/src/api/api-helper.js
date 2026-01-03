@@ -75,5 +75,32 @@ const deleteCustomer = async (id) => {
   }
 };
 
+// update customer
+const updateCustomer = async (id, formData) => {
+  const payload = {
+    name: formData.name,
+    contact_info: `${formData.phone}, ${formData.email}`,
+    status: formData.status,
+  };
+
+  try {
+    const res = await axios.put(`${baseUrl}/customers/${id}`, payload, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("error:", error.response?.data || error);
+    throw error;
+  }
+};
+
 // export functions
-export { getToken, registerUser, signInUser, getAllCustomers, addCustomer, deleteCustomer };
+export {
+  getToken,
+  registerUser,
+  signInUser,
+  getAllCustomers,
+  addCustomer,
+  deleteCustomer,
+  updateCustomer,
+};

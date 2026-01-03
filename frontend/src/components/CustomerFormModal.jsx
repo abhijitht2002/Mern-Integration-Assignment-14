@@ -1,13 +1,27 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
-function AddCustomerModal({ isOpen, onClose, onAdd }) {
+function CustomerFormModal({ isOpen, onClose, onSubmit, initialData }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     status: "active",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    } else {
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        status: "active",
+      });
+    }
+  }, [initialData]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -17,10 +31,10 @@ function AddCustomerModal({ isOpen, onClose, onAdd }) {
     }));
   };
 
-  const onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    onAdd(formData);
+    onSubmit(formData);
     setFormData({
       name: "",
       email: "",
@@ -33,11 +47,13 @@ function AddCustomerModal({ isOpen, onClose, onAdd }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Add Customer</h2>
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+      <div className="bg-white p-6 rounded w-full max-w-md">
+        <h2 className="text-lg font-semibold mb-4">
+          {initialData ? "Edit Customer" : "Add Customer"}
+        </h2>
 
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             name="name"
@@ -91,7 +107,7 @@ function AddCustomerModal({ isOpen, onClose, onAdd }) {
               type="submit"
               className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
             >
-              Add
+              save
             </button>
           </div>
         </form>
@@ -100,4 +116,4 @@ function AddCustomerModal({ isOpen, onClose, onAdd }) {
   );
 }
 
-export default AddCustomerModal;
+export default CustomerFormModal;
